@@ -11,6 +11,12 @@ import docker
 
 from agent.base import Base
 from agent.job import Job, Step, job, step
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+urllib3_logger = logging.getLogger("urllib3")
+urllib3_logger.setLevel(logging.DEBUG)
+urllib3_logger.propagate = True
 
 if TYPE_CHECKING:
     from typing import Literal
@@ -153,6 +159,7 @@ class ImageBuilder(Base):
                 #auth_config=auth_config,
             ):
                 print(line)
+                logging.debug(f"Push response: {line}")
                 self.output["push"].append(self.image_repository+":"+self.image_tag)
                 self.output["push"].append(line)
                 self._publish_throttled_output(False)
