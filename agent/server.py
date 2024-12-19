@@ -37,9 +37,9 @@ class Server(Base):
 
     def docker_login(self, registry):
         url = registry["url"]
-        username = registry["username"]
-        password = registry["password"]
-        return self.execute(f"docker login -u {username} -p {password} {url}")
+        # username = registry["username"]
+        # password = registry["password"]
+        return self.execute(f"docker login {url}")
 
     @step("Initialize Bench")
     def bench_init(self, name, config):
