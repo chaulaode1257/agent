@@ -152,6 +152,8 @@ class ImageBuilder(Base):
                 decode=True,
                 #auth_config=auth_config,
             ):
+                print(line)
+                self.output["push"].append(self.image_repository+":"+self.image_tag)
                 self.output["push"].append(line)
                 self._publish_throttled_output(False)
         except Exception:
