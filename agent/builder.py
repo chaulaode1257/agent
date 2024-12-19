@@ -140,8 +140,8 @@ class ImageBuilder(Base):
         environment = os.environ.copy()
         client = docker.from_env(environment=environment)
         auth_config = {
-            "username": self.registry["username"],
-            "password": self.registry["password"],
+            #"username": self.registry["username"],
+            #"password": self.registry["password"],
             "serveraddress": self.registry["url"],
         }
         try:
