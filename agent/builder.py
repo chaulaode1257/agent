@@ -151,14 +151,12 @@ class ImageBuilder(Base):
             "serveraddress": self.registry["url"],
         }
         try:
-            for line in client.images.push(
+            lines = client.images.push(
                 self.image_repository,
                 self.image_tag,
-                decode=True,
-                #auth_config=auth_config,
-            ):
-                logging.debug(f"Push response: {line}")
-                self.output["push"].append(self.image_repository+":"+self.image_tag)
+                decode=True
+            )
+            for line in lines:
                 self.output["push"].append(line)
                 self._publish_throttled_output(False)
         except Exception:
