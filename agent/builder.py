@@ -150,7 +150,7 @@ class ImageBuilder(Base):
                 self.image_tag,
                 stream=True,
                 decode=True,
-                auth_config=auth_config,
+                #auth_config=auth_config,
             ):
                 self.output["push"].append(line)
                 self._publish_throttled_output(False)
