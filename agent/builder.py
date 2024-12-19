@@ -145,20 +145,18 @@ class ImageBuilder(Base):
     def _push_docker_image(self):
         environment = os.environ.copy()
         client = docker.from_env(environment=environment)
-        auth_config = {
-            #"username": self.registry["username"],
-            #"password": self.registry["password"],
-            "serveraddress": self.registry["url"],
-        }
+        
         try:
             lines = client.images.push(
                 self.image_repository,
                 self.image_tag,
                 decode=True
             )
-            for line in lines:
-                self.output["push"].append(line)
-                self._publish_throttled_output(False)
+            self.output["push"].append(self.image_repository)
+            self.output["push"].append(self.image_tag)
+            # for line in lines:
+            #     self.output["push"].append(line)
+            #     self._publish_throttled_output(False)
         except Exception:
             self._publish_throttled_output(True)
             raise
