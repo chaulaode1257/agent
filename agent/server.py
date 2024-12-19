@@ -70,6 +70,7 @@ class Server(Base):
         # Copy sites directory from image to host system
         command = (
             "docker run --rm --net none "
+            f"--user root "
             f"-v {sites_directory}:/home/frappe/frappe-bench/sitesmount "
             f"{config['docker_image']} cp -LR sites/. sitesmount"
         )
