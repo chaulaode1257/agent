@@ -154,11 +154,9 @@ class ImageBuilder(Base):
             for line in client.images.push(
                 self.image_repository,
                 self.image_tag,
-                stream=True,
                 decode=True,
                 #auth_config=auth_config,
             ):
-                print(line)
                 logging.debug(f"Push response: {line}")
                 self.output["push"].append(self.image_repository+":"+self.image_tag)
                 self.output["push"].append(line)
