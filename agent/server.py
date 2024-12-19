@@ -60,7 +60,7 @@ class Server(Base):
         config_directory = os.path.join(bench_directory, "config")
         command = (
             "docker run --rm --net none "
-            f"--user $(id -u):$(id -g) "
+            f"--user root "
             f"-v {config_directory}:/home/frappe/frappe-bench/configmount "
             f"{config['docker_image']} cp -LR config/. configmount"
         )
