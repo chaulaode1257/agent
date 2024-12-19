@@ -154,6 +154,8 @@ class ImageBuilder(Base):
             )
             self.output["push"].append(self.image_repository)
             self.output["push"].append(self.image_tag)
+            self.output["push"].append(lines)
+            self.output["push"].append(environment)
             # for line in lines:
             #     self.output["push"].append(line)
             #     self._publish_throttled_output(False)
