@@ -45,7 +45,7 @@ class Server(Base):
     def bench_init(self, name, config):
         bench_directory = os.path.join(self.benches_directory, name)
         os.mkdir(bench_directory)
-        directories = ["logs", "sites", "config"]
+        directories = ["logs", "sites", "config", "configmount"]
         for directory in directories:
             os.mkdir(os.path.join(bench_directory, directory))
 
