@@ -22,7 +22,6 @@ services:
     volumes:
       - logs:/home/frappe/frappe-bench/logs:rw
       - sites:/home/frappe/frappe-bench/sites:rw
-      - config:/home/frappe/frappe-bench/configmount:rw
     depends_on:
       - redis-cache
       - redis-queue
