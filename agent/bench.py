@@ -191,7 +191,7 @@ class Bench(Base):
             workdir = "/home/frappe/frappe-bench"
             self.execute(("sudo chown -R frappe:frappe "
                       f"{workdir} "
-                     ), directory=workdir)
+                     ))
             return self.docker_execute(
                 f"bench new-site --no-mariadb-socket "
                 f"--mariadb-root-username {temp_user} "
