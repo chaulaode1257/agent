@@ -698,7 +698,7 @@ class Bench(Base):
             mounts = self.prepare_mounts_on_host(bench_directory)
 
             command = (
-                "docker run -d --init -u frappe "
+                "sudo docker run -d --init -u frappe "
                 f"--restart always --hostname {self.name} "
                 f"-p 127.0.0.1:{self.bench_config['web_port']}:8000 "
                 f"-p 127.0.0.1:{self.bench_config['socketio_port']}:9000 "
