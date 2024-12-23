@@ -66,9 +66,13 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/configmount && cp -LR config/. configmount'"
         )
-        subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
+        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
         self.execute(command, directory=bench_directory)
-
+        
+        self.execute(("sudo chown -R frappe:frappe "
+                      f"{config_directory} "
+                     ), directory=bench_directory)
+        
         sites_directory = os.path.join(bench_directory, "sites")
         # Copy sites directory from image to host system
         command = (
@@ -78,6 +82,9 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/sitesmount && cp -LR sites/. sitesmount'"
         )
+        self.execute(("sudo chown -R frappe:frappe "
+                      f"{sites_directory} "
+                     ), directory=bench_directory)
         # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", sites_directory], check=True)
         return self.execute(command, directory=bench_directory)
 
