@@ -53,8 +53,6 @@ class Server(Base):
         bench_config_file = os.path.join(bench_directory, "config.json")
         with open(bench_config_file, "w") as f:
             json.dump(config, f, indent=1, sort_keys=True)
-      
-        subprocess.run(["sudo", "chown", "-R", "frappe:frappe", self.benches_directory], check=True)
 
         config.update({"directory": bench_directory, "name": name})
         docker_compose = os.path.join(bench_directory, "docker-compose.yml")
@@ -68,6 +66,7 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/configmount && cp -LR config/. configmount'"
         )
+        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
         self.execute(command, directory=bench_directory)
 
         sites_directory = os.path.join(bench_directory, "sites")
@@ -79,6 +78,7 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/sitesmount && cp -LR sites/. sitesmount'"
         )
+        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", sites_directory], check=True)
         return self.execute(command, directory=bench_directory)
 
     def dump(self):
