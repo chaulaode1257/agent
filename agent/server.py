@@ -52,6 +52,8 @@ class Server(Base):
         bench_config_file = os.path.join(bench_directory, "config.json")
         with open(bench_config_file, "w") as f:
             json.dump(config, f, indent=1, sort_keys=True)
+        # Thay đổi quyền sở hữu cho thư mục benches
+        subprocess.run(["chown", "-R", "frappe:frappe", self.benches_directory], check=True)
 
         config.update({"directory": bench_directory, "name": name})
         docker_compose = os.path.join(bench_directory, "docker-compose.yml")
