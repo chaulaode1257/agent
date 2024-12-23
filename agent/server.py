@@ -66,7 +66,7 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/configmount && cp -LR config/. configmount'"
         )
-        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
+        subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
         self.execute(command, directory=bench_directory)
 
         sites_directory = os.path.join(bench_directory, "sites")
