@@ -84,8 +84,22 @@ class Server(Base):
         )
         self.execute(command, directory=bench_directory)
 
-        return self.execute(("sudo chown -R frappe:frappe "
+        logs_directory = os.path.join(bench_directory, "logs")
+        # Copy sites directory from image to host system
+        command = (
+            "docker run --rm --net none "
+            f"--user root "
+            f"-v {logs_directory}:/home/frappe/frappe-bench/logs "
+            f"{config['docker_image']} "
+            "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/logs'"
+        )
+        self.execute(command, directory=bench_directory)
+        
+        self.execute(("sudo chown -R frappe:frappe "
                       f"{sites_directory} "
+                     ), directory=bench_directory)
+        return self.execute(("sudo chown -R frappe:frappe "
+                      f"{logs_directory} "
                      ), directory=bench_directory)
 
     def dump(self):
