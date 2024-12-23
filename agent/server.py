@@ -66,7 +66,7 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/configmount && cp -LR config/. configmount'"
         )
-        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", config_directory], check=True)
+
         self.execute(command, directory=bench_directory)
         
         self.execute(("sudo chown -R frappe:frappe "
@@ -80,7 +80,7 @@ class Server(Base):
             f"--user root "
             f"-v {sites_directory}:/home/frappe/frappe-bench/sitesmount "
             f"{config['docker_image']} "
-            "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/sitesmount && cp -LR sites/. sitesmount'"
+            "sh -c 'chown frappe:frappe /home/frappe/frappe-bench && cp -LR sites/. sitesmount'"
         )
         self.execute(command, directory=bench_directory)
 
