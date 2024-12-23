@@ -82,11 +82,11 @@ class Server(Base):
             f"{config['docker_image']} "
             "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/sitesmount && cp -LR sites/. sitesmount'"
         )
-        self.execute(("sudo chown -R frappe:frappe "
+        self.execute(command, directory=bench_directory)
+
+        return self.execute(("sudo chown -R frappe:frappe "
                       f"{sites_directory} "
                      ), directory=bench_directory)
-        # subprocess.run(["sudo", "chown", "-R", "frappe:frappe", sites_directory], check=True)
-        return self.execute(command, directory=bench_directory)
 
     def dump(self):
         return {
