@@ -62,7 +62,8 @@ class Server(Base):
             "docker run --rm --net none "
             f"--user root "
             f"-v {config_directory}:/home/frappe/frappe-bench/configmount "
-            f"{config['docker_image']} cp -LR config/. configmount && chown frappe:frappe /home/frappe/frappe-bench/configmount"
+            f"{config['docker_image']} "
+            "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/configmount && cp -LR config/. configmount'"
         )
         self.execute(command, directory=bench_directory)
 
@@ -72,7 +73,8 @@ class Server(Base):
             "docker run --rm --net none "
             f"--user root "
             f"-v {sites_directory}:/home/frappe/frappe-bench/sitesmount "
-            f"{config['docker_image']} cp -LR sites/. sitesmount && chown frappe:frappe /home/frappe/frappe-bench/sitesmount"
+            f"{config['docker_image']} "
+            "sh -c 'chown frappe:frappe /home/frappe/frappe-bench/sitesmount && cp -LR sites/. sitesmount'"
         )
         return self.execute(command, directory=bench_directory)
 
