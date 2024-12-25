@@ -189,7 +189,7 @@ class Bench(Base):
         site_database, temp_user, temp_password = self.create_mariadb_user(name, mariadb_root_password)
         try:
             return self.docker_execute(
-                f"chown -R frappe:frappe logs && bench new-site --no-mariadb-socket "
+                f"chown -R frappe:frappe . && bench new-site --no-mariadb-socket "
                 f"--mariadb-root-username {temp_user} "
                 f"--mariadb-root-password {temp_password} "
                 f"--admin-password {admin_password} "
