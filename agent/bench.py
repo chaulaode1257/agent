@@ -175,13 +175,15 @@ class Bench(Base):
             workdir = os.path.join(workdir, subdir)
 
         if self.bench_config.get("single_container"):
-            command = f"sudo docker exec -u root -w {workdir} " f"{interactive} {self.name} {command}"
+            command = f"sudo docker exec -w {workdir} " f"{interactive} {self.name} {command}"
         else:
             service = f"{self.name}_worker_default"
             task = self.execute("docker service ps -f desired-state=Running -q --no-trunc " f"{service}")[
                 "output"
             ].split()[0]
-            command = f"sudo docker exec -u root -w {workdir} " f"{interactive} {service}.1.{task} {command}"
+            command = f"sudo docker exec -w {workdir} " f"{interactive} {service}.1.{task} {command}"
+        command_chown = f"sudo docker exec -u root -w {workdir} " f"{interactive} {service}.1.{task} f"chown -R frappe:frappe ."
+        self.execute(command_chown, input=input, non_zero_throw=non_zero_throw)
         return self.execute(command, input=input, non_zero_throw=non_zero_throw)
 
     @step("New Site")
@@ -189,7 +191,7 @@ class Bench(Base):
         site_database, temp_user, temp_password = self.create_mariadb_user(name, mariadb_root_password)
         try:
             return self.docker_execute(
-                f"chown -R frappe:frappe . && bench new-site --no-mariadb-socket "
+                f"bench new-site --no-mariadb-socket "
                 f"--mariadb-root-username {temp_user} "
                 f"--mariadb-root-password {temp_password} "
                 f"--admin-password {admin_password} "
