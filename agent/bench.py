@@ -175,13 +175,13 @@ class Bench(Base):
             workdir = os.path.join(workdir, subdir)
 
         if self.bench_config.get("single_container"):
-            command = f"docker exec -w {workdir} " f"{interactive} {self.name} {command}"
+            command = f"sudo docker exec -u root -w {workdir} " f"{interactive} {self.name} {command}"
         else:
             service = f"{self.name}_worker_default"
             task = self.execute("docker service ps -f desired-state=Running -q --no-trunc " f"{service}")[
                 "output"
             ].split()[0]
-            command = f"docker exec -w {workdir} " f"{interactive} {service}.1.{task} {command}"
+            command = f"sudo docker exec -u root -w {workdir} " f"{interactive} {service}.1.{task} {command}"
         return self.execute(command, input=input, non_zero_throw=non_zero_throw)
 
     @step("New Site")
@@ -189,7 +189,7 @@ class Bench(Base):
         site_database, temp_user, temp_password = self.create_mariadb_user(name, mariadb_root_password)
         try:
             return self.docker_execute(
-                f"bench new-site --no-mariadb-socket "
+                f"chown -R frappe:frappe logs && bench new-site --no-mariadb-socket "
                 f"--mariadb-root-username {temp_user} "
                 f"--mariadb-root-password {temp_password} "
                 f"--admin-password {admin_password} "
@@ -712,7 +712,7 @@ class Bench(Base):
             )
         else:
             command = (
-                "docker stack deploy "
+                "sudo docker stack deploy "
                 "--resolve-image=never --with-registry-auth "
                 f"--compose-file docker-compose.yml {self.name} "
             )
@@ -720,9 +720,9 @@ class Bench(Base):
 
     def stop(self):
         if self.bench_config.get("single_container"):
-            self.execute(f"docker stop {self.name}")
-            return self.execute(f"docker rm {self.name}")
-        return self.execute(f"docker stack rm {self.name}")
+            self.execute(f"sudo docker stop {self.name}")
+            return self.execute(f"sudo docker rm {self.name}")
+        return self.execute(f"sudo docker stack rm {self.name}")
 
     @step("Stop Bench")
     def _stop(self):
@@ -730,7 +730,7 @@ class Bench(Base):
 
     @step("Start Bench")
     def _start(self):
-        return self.execute(f"docker start {self.name}")
+        return self.execute(f"sudo docker start {self.name}")
 
     @job("Force Update Bench Limits")
     def force_update_limits(self, memory_high, memory_max, memory_swap, vcpu):
