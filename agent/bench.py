@@ -189,6 +189,10 @@ class Bench(Base):
     def bench_new_site(self, name, mariadb_root_password, admin_password):
         site_database, temp_user, temp_password = self.create_mariadb_user(name, mariadb_root_password)
         try:
+            interactive = "-i" if input else ""
+            workdir =  "/home/frappe/frappe-bench"
+            command_chown = f"sudo docker exec -u root -w {workdir} " f"{interactive} {self.name} f"chown -R frappe:frappe ."
+            self.execute(command_chown)
             return self.docker_execute(
                 f"bench new-site --no-mariadb-socket "
                 f"--mariadb-root-username {temp_user} "
