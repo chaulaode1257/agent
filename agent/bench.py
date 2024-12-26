@@ -191,7 +191,7 @@ class Bench(Base):
         try:
             interactive = "-i" if input else ""
             workdir =  "/home/frappe/frappe-bench"
-            command_chown = f"sudo docker exec -u root -w {workdir} " f"{interactive} {self.name} f"chown -R frappe:frappe ."
+            command_chown = f"sudo docker exec -u root -w {workdir} {interactive} {self.name} chown -R frappe:frappe ."
             self.execute(command_chown)
             return self.docker_execute(
                 f"bench new-site --no-mariadb-socket "
