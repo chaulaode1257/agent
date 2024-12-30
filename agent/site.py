@@ -240,7 +240,7 @@ class Site(Base):
         if remove:
             for key in remove:
                 new_config.pop(key, None)
-
+        self.execute(f"sudo chown -R frappe:frappe {self.directory}")
         self.setconfig(new_config)
 
     @job("Add Domain", priority="high")
