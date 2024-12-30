@@ -232,12 +232,12 @@ class Bench(Base):
         site.enable_maintenance_mode()
         site.wait_till_ready()
         if config:
-            if site.config.get("host_name") == f"https://{site.name}":
-                config.update({"host_name": f"https://{new_name}"})
+            if site.config.get("host_name") == f"http://{site.name}":
+                config.update({"host_name": f"http://{new_name}"})
             site.update_config(config)
         else:
-            if site.config.get("host_name") == f"https://{site.name}":
-                site.update_config({"host_name": f"https://{new_name}"})
+            if site.config.get("host_name") == f"http://{site.name}":
+                site.update_config({"host_name": f"http://{new_name}"})
         site.rename(new_name)
         self.setup_nginx()
         self.server.reload_nginx()
