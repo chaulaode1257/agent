@@ -264,7 +264,7 @@ class Proxy(Server):
     def _generate_proxy_config(self):
         proxy_config_file = os.path.join(self.nginx_directory, "proxy.conf")
         domain = self.config.get("domain", "interpcloud.com")
-        print(self.config)
+    
         self._render_template(
             "proxy/nginx.conf.jinja2",
             {
