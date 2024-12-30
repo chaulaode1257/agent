@@ -171,6 +171,9 @@ class Bench(Base):
     def docker_execute(self, command, input=None, subdir=None, non_zero_throw=True):
         interactive = "-i" if input else ""
         workdir = "/home/frappe/frappe-bench"
+        interactive = "-i" if input else ""
+        command_chown = f"sudo docker exec -u root -w {workdir} {interactive} {self.name} chown -R frappe:frappe ."
+        self.execute(command_chown)
         if subdir:
             workdir = os.path.join(workdir, subdir)
 
