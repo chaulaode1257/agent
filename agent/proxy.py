@@ -285,7 +285,8 @@ class Proxy(Server):
         self._reload_nginx()
 
     def _create_default_host(self):
-        default_host = f"*.{self.config['domain']}"
+        domain = self.config.get("domain", "interpcloud.com")
+        default_host = f"*.{domain}"
         default_host_directory = os.path.join(self.hosts_directory, default_host)
         os.makedirs(default_host_directory, exist_ok=True)
         map_file = os.path.join(default_host_directory, "map.json")
