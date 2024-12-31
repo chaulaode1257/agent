@@ -185,6 +185,8 @@ class Bench(Base):
                 "output"
             ].split()[0]
             command = f"sudo docker exec -w {workdir} " f"{interactive} {service}.1.{task} {command}"
+            command_chown = f"sudo docker exec -u root -w {workdir} " f"{interactive} {service}.1.{task} chown -R frappe:frappe ."
+            self.execute(command_chown)
         
         return self.execute(command, input=input, non_zero_throw=non_zero_throw)
 
