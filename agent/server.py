@@ -40,7 +40,8 @@ class Server(Base):
         url = registry["url"]
         # username = registry["username"]
         # password = registry["password"]
-        return self.execute(f"docker login {url}")
+        return sefl.execute(f"gcloud auth configure-docker")
+        #return self.execute(f"docker login {url}")
 
     @step("Initialize Bench")
     def bench_init(self, name, config):
