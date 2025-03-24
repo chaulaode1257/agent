@@ -29,7 +29,8 @@ upstream suspended_saas {
 	keepalive 100;
 }
 
-map $actual_host $upstream_server_hash {
+# map $actual_host $upstream_server_hash {
+map $host $upstream_server_hash {
 {% for upstream in upstreams.values() -%}
 	{% for site in upstream["sites"] %}
 	{{ site.name }} http://{{ site.upstream }};
@@ -199,14 +200,16 @@ server {
 {% endfor %}
 
 server {
-	listen 80;
+	listen 80 default_server;
 	server_name _;
 
 	location ^~ /.well-known/acme-challenge/ {
 		return 301 http://ssl.{{ domain }}$request_uri;
 	}
 	location / {
-		return 301 https://$host$request_uri;
+                proxy_set_header Host $host;
+                proxy_pass $upstream_server_hash$request_uri;
+		# return 301 https://$host$request_uri;
 	}
 }
 
